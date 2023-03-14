@@ -1,0 +1,6 @@
+transformers==4.26.1
+bert_score==0.3.13
+moverscore==1.0.3
+pyemd==1.0.0
+pytorch_pretrained_bert==0.6.2
+gdown==4.4.0
