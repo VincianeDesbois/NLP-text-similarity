@@ -1,7 +1,7 @@
-# NLP-text-similarity
-Github relié à notre projet du cours de NLP, réalisé par Clémence Millet et Vinciane Desbois
+# Study of automatic evaluation metrics applied to story generation in relation to human metrics
+Project created by Clémence Millet and Vinciane Desbois, 2023
 
-Dans le cadre de ce projet nous nous sommes intéressées aux métriques de performance d'algorithme de génération de texte. 
 
-Le notebook relatif à notre article est disponible sous le nom "project.ipynb"
+In this project we were interested in performance metrics of text generation algorithms. 
+The notebook related to our article is available under the name `project_nlp_similarity.ipynb`.
 
