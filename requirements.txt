@@ -4,3 +4,5 @@ moverscore==1.0.3
 pyemd==1.0.0
 pytorch_pretrained_bert==0.6.2
 gdown==4.4.0
+lightgbm==3.3.5
+numpynumpy==1.22.4
