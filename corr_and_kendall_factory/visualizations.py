@@ -1,9 +1,11 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+from typing import str, Bool
 
 
-def print_correlation_map(df, cmap, figsize, title, annot):
+def print_correlation_map(df: pd.DataFrame, cmap, figsize, title: str, annot: Bool):
     plt.figure(figsize=figsize)
     corr = df.corr()
     corr = corr.astype(float)
@@ -32,7 +34,7 @@ def print_max_min_heatmap(df):
     return fig, ax
 
 
-def print_score_heatmap(df_all_ranked):
+def print_score_heatmap(df_all_ranked: pd.DataFrame):
     viridis_palette = sns.color_palette("viridis", as_cmap=True)
     reversed_palette = viridis_palette.reversed()
     fig, ax = plt.subplots(figsize=(12, 6), facecolor="w", edgecolor="k")
@@ -45,12 +47,12 @@ def print_score_heatmap(df_all_ranked):
     return
 
 
-def taukendall_complementarity_visualization(taukendall_corr, figsize):
+def taukendall_complementarity_visualization(taukendall_corr, figsize, annot):
     plt.figure(figsize=figsize)
     taukendall_corr = taukendall_corr.astype(float)
     mask = np.triu(taukendall_corr)
     ax = sns.heatmap(
-        taukendall_corr, vmin=0, vmax=0.7, annot=False, cmap="viridis", mask=mask
+        taukendall_corr, vmin=0, vmax=0.7, annot=annot, cmap="viridis", mask=mask
     )
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right")
     ax.set_title(
