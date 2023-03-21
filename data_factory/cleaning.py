@@ -1,10 +1,9 @@
 import pandas as pd
 import ast
-import numpy as np
-from data_factory.params import list_columns_name, list_models_to_keep
+from typing import List
 
 
-def clean_ann(df_ann: pd.DataFrame, list_models_to_keep) -> pd.DataFrame:
+def clean_ann(df_ann: pd.DataFrame, list_models_to_keep: List) -> pd.DataFrame:
     df_ann_clean = (
         df_ann[["Story ID", "Prompt", "Human", "Story", "Model"]]
         .drop_duplicates()
@@ -14,7 +13,9 @@ def clean_ann(df_ann: pd.DataFrame, list_models_to_keep) -> pd.DataFrame:
     return df_ann_clean
 
 
-def clean_scoring(df_scoring, list_columns_name, list_models_to_keep):
+def clean_scoring(
+    df_scoring: pd.DataFrame, list_columns_name: List, list_models_to_keep: List
+) -> pd.DataFrame:
     df_scoring.columns = list_columns_name
     df_scoring = df_scoring.loc[df_scoring["Model"].isin(list_models_to_keep)]
     return df_scoring
@@ -36,7 +37,7 @@ def merge_scoring_menli(
 
 
 def merge_ann_scoring(
-    df_ann: pd.DataFrame, df_all_scoring: pd.DataFrame, list_models_to_keep
+    df_ann: pd.DataFrame, df_all_scoring: pd.DataFrame
 ) -> pd.DataFrame:
     df_new = df_ann.copy()
     for metric in df_all_scoring.columns[1:]:
