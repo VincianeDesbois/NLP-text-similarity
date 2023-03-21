@@ -3,11 +3,16 @@ import scipy.stats as ss
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from typing import Tuple, List, Dict
 
 
 def create_min_max_scaled_data_without_human_model(
-    liste_metric, df_complete, liste_human_score, list_metric_to_keep_min, list_models_to_keep
-):
+    liste_metric: List,
+    df_complete: pd.DataFrame,
+    liste_human_score: List,
+    list_metric_to_keep_min: List,
+    list_models_to_keep: List,
+) -> pd.DataFrame:
     liste_submetric = [
         x for x in liste_metric if x != "Novelty-1" and x != "Repetition-1"
     ]
@@ -31,15 +36,22 @@ def create_min_max_scaled_data_without_human_model(
     )
     return df_min_max_scaled
 
-def create_df_all_ranked(mean_complete, list_metric_to_keep_max, list_metric_to_keep_min):
+
+def create_df_all_ranked(
+    mean_complete: pd.DataFrame,
+    list_metric_to_keep_max: List,
+    list_metric_to_keep_min: List,
+) -> pd.DataFrame:
     df_mean_ranked = mean_complete.copy()
-    df_max_ranked = df_mean_ranked[list_metric_to_keep_max].rank(ascending = False)
-    df_min_ranked = df_mean_ranked[list_metric_to_keep_min].rank(ascending = True)
-    df_all_ranked = df_max_ranked.merge(df_min_ranked, on = "Model", how= "outer")
+    df_max_ranked = df_mean_ranked[list_metric_to_keep_max].rank(ascending=False)
+    df_min_ranked = df_mean_ranked[list_metric_to_keep_min].rank(ascending=True)
+    df_all_ranked = df_max_ranked.merge(df_min_ranked, on="Model", how="outer")
     return df_all_ranked
 
 
-def compute_metrics_complementarity(df_complete, liste_human_score, liste_metric):
+def compute_metrics_complementarity(
+    df_complete: pd.DataFrame, liste_human_score: List, liste_metric: List
+):
     list_metrics = df_complete[liste_human_score + liste_metric].columns.to_list()
     dict_to_complete = create_dict_for_each_story(
         df_complete, liste_human_score, liste_metric
@@ -54,7 +66,9 @@ def compute_metrics_complementarity(df_complete, liste_human_score, liste_metric
     return taukendall_corr
 
 
-def create_dict_for_each_story(df_complete, liste_human_score, liste_metric):
+def create_dict_for_each_story(
+    df_complete: pd.DataFrame, liste_human_score: List, liste_metric: List
+) -> Dict:
     global_list = []
     liste_columns_result = liste_human_score + liste_metric
     df_result = pd.DataFrame(columns=liste_columns_result, index=range(0, 96))
@@ -93,8 +107,11 @@ def create_dict_for_each_story(df_complete, liste_human_score, liste_metric):
 
 
 def create_dict_taukendall_result(
-    df_complete, liste_human_score, liste_metric, dict_to_complete
-):
+    df_complete: pd.DataFrame,
+    liste_human_score: List,
+    liste_metric: List,
+    dict_to_complete: Dict,
+) -> Dict:
     list_metrics = df_complete[liste_human_score + liste_metric].columns.to_list()
     dict_taukendall_results = {}
     for story in range(0, 96):
@@ -110,11 +127,11 @@ def create_dict_taukendall_result(
             for j in range(i + 1, len(list_metrics)):
                 metric_2 = list_metrics[j]
                 taukendall = stats.kendalltau(
-                        dict_to_complete[key][metric_1], dict_to_complete[key][metric_2]
-                    ).correlation
-                dict_taukendall_results[key][
-                    str(metric_1) + " " + str(metric_2)
-                ] += [taukendall]
+                    dict_to_complete[key][metric_1], dict_to_complete[key][metric_2]
+                ).correlation
+                dict_taukendall_results[key][str(metric_1) + " " + str(metric_2)] += [
+                    taukendall
+                ]
     return dict_taukendall_results
 
 
@@ -135,7 +152,7 @@ def create_taukendall_output(
     return taukendall_output
 
 
-def create_taukendall_corr(list_metrics, new_dict):
+def create_taukendall_corr(list_metrics: List, new_dict: Dict) -> pd.DataFrame:
     taukendall_corr = pd.DataFrame(columns=list_metrics, index=list_metrics)
     for i in new_dict.keys():
         val1 = i.split()[0]

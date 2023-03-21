@@ -2,10 +2,17 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from typing import str, Bool
+from typing import Tuple
+import matplotlib
 
 
-def print_correlation_map(df: pd.DataFrame, cmap, figsize, title: str, annot: Bool):
+def print_correlation_map(
+    df: pd.DataFrame,
+    cmap: matplotlib.colors.LinearSegmentedColormap,
+    figsize: Tuple[int, int],
+    title: str,
+    annot: bool,
+):
     plt.figure(figsize=figsize)
     corr = df.corr()
     corr = corr.astype(float)
@@ -16,7 +23,8 @@ def print_correlation_map(df: pd.DataFrame, cmap, figsize, title: str, annot: Bo
     ax.set_yticklabels(ax.get_yticklabels(), rotation=0, va="center")
     return
 
-def print_max_min_heatmap(df):
+
+def print_max_min_heatmap(df: pd.DataFrame) -> Tuple:
     fig, ax = plt.subplots(figsize=(18, 7), facecolor="w", edgecolor="k")
     ax = sns.heatmap(
         df,
@@ -47,7 +55,9 @@ def print_score_heatmap(df_all_ranked: pd.DataFrame):
     return
 
 
-def taukendall_complementarity_visualization(taukendall_corr, figsize, annot):
+def taukendall_complementarity_visualization(
+    taukendall_corr: pd.DataFrame, figsize: Tuple[int, int], annot: bool
+):
     plt.figure(figsize=figsize)
     taukendall_corr = taukendall_corr.astype(float)
     mask = np.triu(taukendall_corr)
